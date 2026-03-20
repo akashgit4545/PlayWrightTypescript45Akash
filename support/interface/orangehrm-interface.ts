@@ -16,3 +16,7 @@ export enum OrangeHRMUrls {
     loginPage = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login',
     dashboardPage = 'https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index',
 }
+
+export enum orangeHrmPageConstants {
+    ERROR_MESSAGE = 'Invalid credentials'
+}

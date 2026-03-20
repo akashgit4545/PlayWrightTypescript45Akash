@@ -1,5 +1,5 @@
 import { expect, Page } from "@playwright/test";
-import { OrangeHRMInterface, OrangeHRMLocators, OrangeHRMUrls } from "../interface/orangehrm-interface";
+import { OrangeHRMInterface, OrangeHRMLocators, OrangeHRMUrls, orangeHrmPageConstants } from "../interface/orangehrm-interface";
 
 export class OrangeHRM implements OrangeHRMInterface {
     constructor(private page: Page) { }
@@ -20,6 +20,6 @@ export class OrangeHRM implements OrangeHRMInterface {
 
     async verifyLoginFailure(): Promise<void> {
         await expect(this.page.locator(OrangeHRMLocators.errorMessage)).toBeVisible({ timeout: 10000 });
-        await expect(this.page.locator(OrangeHRMLocators.errorMessage)).toHaveText('Invalid credentials');
+        await expect(this.page.locator(OrangeHRMLocators.errorMessage)).toHaveText(orangeHrmPageConstants.ERROR_MESSAGE);
     }
 }
