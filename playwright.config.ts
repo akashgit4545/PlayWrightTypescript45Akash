@@ -22,7 +22,9 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['html', { open: 'always' }]],
+  // In CI we don't want to open the HTML report automatically and
+  // we must run in headless mode (no X server). Adjust behavior based on CI.
+  reporter: process.env.CI ? [['html', { open: 'never' }]] : [['html', { open: 'always' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
@@ -32,7 +34,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     actionTimeout: 60 * 1000, // 60 seconds
     navigationTimeout: 60 * 1000, // 60 seconds
-    headless: false, // Run tests in headless mode
+    headless: !!process.env.CI, // Run headless on CI (no X server), headed locally
     video: 'on', // Record video of test execution
     screenshot: 'on', // Capture screenshots only on test failure
     launchOptions: {
