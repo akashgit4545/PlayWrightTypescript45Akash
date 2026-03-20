@@ -1,5 +1,4 @@
 import { expect, Locator, test } from '@playwright/test';
-import { time } from 'node:console';
 
 test('Login to OrangeHRM', async ({ page }) => {
     await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
