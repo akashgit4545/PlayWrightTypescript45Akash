@@ -1,5 +1,6 @@
 import { test } from '@playwright/test';
 import { OrangeHRM } from '../support/domain/orangehrm';
+import { orangehrmData } from '../fixtures/data.registry';
 
 let orangePage: OrangeHRM;
 
@@ -8,12 +9,14 @@ test.beforeEach(async ({ page }) => {
     await orangePage.launchApplication();
 });
 
-test('Login to OrangeHRM', async ({ page }) => {
-    await orangePage.login('Admin', 'admin123');
-    await orangePage.verifyLoginSuccess();
-});
+for (const data of orangehrmData) {
+  test(`Login Flow - with username ${data.username} and password ${data.password}`, async () => {
+    await orangePage.login(data.username, data.password);
+    if (data.expectedResult === 'success') {
+      await orangePage.verifyLoginSuccess();
+    } else {
+      await orangePage.verifyLoginFailure();
+    }
+  });
+}
 
-test('Invalid Login to OrangeHRM', async ({ page }) => {
-    await orangePage.login('Admin', 'admin1');
-    await orangePage.verifyLoginFailure();
-});
