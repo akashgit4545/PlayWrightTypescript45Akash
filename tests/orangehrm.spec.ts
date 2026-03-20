@@ -1,38 +1,19 @@
-import { expect, Locator, test } from '@playwright/test';
+import { test } from '@playwright/test';
+import { OrangeHRM } from '../support/domain/orangehrm';
+
+let orangePage: OrangeHRM;
+
+test.beforeEach(async ({ page }) => {
+    orangePage = new OrangeHRM(page);
+    await orangePage.launchApplication();
+});
 
 test('Login to OrangeHRM', async ({ page }) => {
-    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-    await page.waitForLoadState('networkidle');
-    const companyBranding = page.getByAltText('company-branding');
-    await expect(companyBranding).toBeVisible();
-
-    const username: Locator = page.locator('input[name="username"]');
-    const password: Locator = page.locator('input[name="password"]');
-    const loginButton: Locator = page.locator('button[type="submit"]');
-
-    await username.fill('Admin');
-    await password.fill('admin123');
-    await loginButton.click();
-
-    await expect(page).toHaveURL('https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index');
-    console.log('Login successful, dashboard page loaded.');
+    await orangePage.login('Admin', 'admin123');
+    await orangePage.verifyLoginSuccess();
 });
 
 test('Invalid Login to OrangeHRM', async ({ page }) => {
-    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-    await page.waitForLoadState('networkidle');
-    const companyBranding = page.getByAltText('company-branding');
-    await expect(companyBranding).toBeVisible();
-
-    const username: Locator = page.locator('input[name="username"]');
-    const password: Locator = page.locator('input[name="password"]');
-    const loginButton: Locator = page.locator('button[type="submit"]');
-    const errorMessage: Locator = page.getByText('Invalid credentials');
-    
-    await username.fill('Admin');
-    await password.fill('admin1');
-    await loginButton.click();
-    
-    await expect(errorMessage).toBeVisible({ timeout: 10000 });
-    await expect(errorMessage).toHaveText('Invalid credentials');
+    await orangePage.login('Admin', 'admin1');
+    await orangePage.verifyLoginFailure();
 });
