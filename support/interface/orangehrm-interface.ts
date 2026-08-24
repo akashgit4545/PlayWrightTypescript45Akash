@@ -34,6 +34,6 @@ export enum orangeHrmPageConstants {
     USERNAME = 'Username',
     PASSWORD = 'Password',
     FORGOT_PASSOWRD = 'Forgot your password? ',
-    COPYRIGHT_ONE = 'OrangeHRM OS 5.8',
+    COPYRIGHT_ONE = 'OrangeHRM OS 5.9',
     COPYRIGHT_TWO = '© 2005 - 2026 OrangeHRM, Inc. All rights reserved.'
 }   
